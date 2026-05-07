@@ -1,0 +1,53 @@
+# Codex Starter — personal files (never committed)
+.codex/settings.local.json
+.codex/logs/
+.codex/.tool-counter
+CODEx.local.md
+
+# Framework metafiles — for public/shared repos (repo_access=public or private-shared)
+# Uncomment these lines if your project is shared with others:
+# >>> framework-public-ignore
+# .codex/
+# CODEx.md
+# manifest.md
+# AGENTS.md
+# experiments/
+# drafts/
+# scratch/
+# analysis/
+# research/
+# notes/
+# <<< framework-public-ignore
+
+# Environment
+.env
+.env.local
+.env.production
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Build
+dist/
+dist-release/
+build/
+*.egg-info/
+
+# Test artifacts
+test-results/
+playwright-report/
+coverage/
+.pytest_cache/
+
+# Database (local development)
+*.db
+*.sqlite
+*.sqlite3
