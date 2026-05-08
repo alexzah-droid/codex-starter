@@ -1,6 +1,6 @@
 # Codex Starter v1
 
-[![Version](https://img.shields.io/badge/version-v1.1.0-2563eb)](https://github.com/alexzah-droid/codex-starter)
+[![Version](https://img.shields.io/badge/version-v1.2.0-2563eb)](https://github.com/alexzah-droid/codex-starter)
 [![Status](https://img.shields.io/badge/status-active-16a34a)](https://github.com/alexzah-droid/codex-starter)
 [![Template](https://img.shields.io/badge/template-codex--starter-7c3aed)](https://github.com/alexzah-droid/codex-starter)
 [![Installer](https://img.shields.io/badge/installer-scripts%2Finit--project.sh-f59e0b)](https://github.com/alexzah-droid/codex-starter/blob/main/scripts/init-project.sh)
@@ -15,7 +15,7 @@ Language: Русский | [English](README.en.md)
 
 `Codex Starter` — это готовая скелетная среда для проектов, в которых основной рабочий агент — Codex. Она предоставляет согласованную структуру правил, навыков, агентов, хуков и памяти, чтобы агент работал автономно и не терял контекст.
 
-Проект базируется на официальной документации OpenAI Codex: конфигурация следует страницам [Config basics](https://developers.openai.com/codex/config-basic), [Advanced configuration](https://developers.openai.com/codex/config-advanced), [Config reference](https://developers.openai.com/codex/config-reference), а lifecycle hooks вынесены в формат [Codex Hooks](https://developers.openai.com/codex/hooks).
+Проект базируется на официальной документации OpenAI Codex: конфигурация следует страницам [Config basics](https://developers.openai.com/codex/config-basic), [Advanced configuration](https://developers.openai.com/codex/config-advanced), [Config reference](https://developers.openai.com/codex/config-reference), [Sample config](https://developers.openai.com/codex/config-sample), а lifecycle hooks вынесены в формат [Codex Hooks](https://developers.openai.com/codex/hooks).
 
 ## Что входит в этот шаблон
 
@@ -44,7 +44,7 @@ Codex Starter помогает:
 
 ## Экономия токенов
 
-Базовый конфиг уже снижает лишний расход: `web_search = "cached"`, `model_reasoning_summary = "concise"` и `model_verbosity = "medium"` уменьшают шум без потери управляемости. Для простых задач переопределяйте effort прямо из CLI:
+Базовый конфиг уже снижает лишний расход: `web_search = "cached"`, `model_reasoning_summary = "concise"`, `model_verbosity = "medium"`, `tool_output_token_limit = 12000` и `enable_request_compression = true` уменьшают шум без потери управляемости. Для простых задач переопределяйте effort прямо из CLI:
 
 ```bash
 codex -c model_reasoning_effort='"low"' -c model_verbosity='"low"' "обнови документацию"

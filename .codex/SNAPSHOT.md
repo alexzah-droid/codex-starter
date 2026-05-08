@@ -1,11 +1,13 @@
 # Codex Starter Memory Snapshot
 
 **Проект:** Codex Starter
-**Статус:** готовится commit/push v1.1.0
-**Последнее обновление:** 2026-05-08T21:20:59Z
+**Статус:** готовится commit/push v1.2.0
+**Последнее обновление:** 2026-05-08T21:55:53Z
 
 ## Что сделано
 
+- Добавлены настройки из официального Codex Sample Config: `plan_mode_reasoning_effort`, `tool_output_token_limit`, project doc fallback, history limits, `fast_mode`, `enable_request_compression`.
+- README.md и README.en.md обновлены: версия `v1.2.0`, ссылка на Sample config и уточненный раздел экономии токенов.
 - Переведена конфигурация Codex на официальный `.codex/config.toml`.
 - Вынесены hook-подписки в официальный `.codex/hooks.json`; legacy `.codex/settings.json` удалён.
 - Добавлены advanced-настройки Codex: reasoning summary/verbosity, agents limits, shell environment policy, sandbox network policy, telemetry/privacy defaults.
@@ -30,7 +32,7 @@
 
 ## В процессе
 
-- Сделать безопасный commit v1.1.0.
+- Сделать безопасный commit v1.2.0.
 - Проверить commit и выполнить `git push origin main`.
 
 ## Следующее

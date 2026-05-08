@@ -1,6 +1,6 @@
 # Codex Starter v1
 
-[![Version](https://img.shields.io/badge/version-v1.1.0-2563eb)](https://github.com/alexzah-droid/codex-starter)
+[![Version](https://img.shields.io/badge/version-v1.2.0-2563eb)](https://github.com/alexzah-droid/codex-starter)
 [![Status](https://img.shields.io/badge/status-active-16a34a)](https://github.com/alexzah-droid/codex-starter)
 [![Template](https://img.shields.io/badge/template-codex--starter-7c3aed)](https://github.com/alexzah-droid/codex-starter)
 [![Installer](https://img.shields.io/badge/installer-scripts%2Finit--project.sh-f59e0b)](https://github.com/alexzah-droid/codex-starter/blob/main/scripts/init-project.sh)
@@ -15,7 +15,7 @@ Language: [Русский](README.md) | English
 
 `Codex Starter` is a ready-to-use skeleton environment for projects where Codex is the primary working agent. It provides a consistent structure for rules, skills, agents, hooks, and project memory so the agent can work autonomously without losing context.
 
-This project is based on the official OpenAI Codex documentation: configuration follows [Config basics](https://developers.openai.com/codex/config-basic), [Advanced configuration](https://developers.openai.com/codex/config-advanced), [Config reference](https://developers.openai.com/codex/config-reference), and lifecycle hooks use the documented [Codex Hooks](https://developers.openai.com/codex/hooks) format.
+This project is based on the official OpenAI Codex documentation: configuration follows [Config basics](https://developers.openai.com/codex/config-basic), [Advanced configuration](https://developers.openai.com/codex/config-advanced), [Config reference](https://developers.openai.com/codex/config-reference), [Sample config](https://developers.openai.com/codex/config-sample), and lifecycle hooks use the documented [Codex Hooks](https://developers.openai.com/codex/hooks) format.
 
 ## What This Template Includes
 
@@ -44,7 +44,7 @@ Codex Starter helps you:
 
 ## Token Savings
 
-The default config already avoids some waste: `web_search = "cached"`, `model_reasoning_summary = "concise"`, and `model_verbosity = "medium"` keep output controlled without removing useful context. For simple tasks, override effort directly from the CLI:
+The default config already avoids some waste: `web_search = "cached"`, `model_reasoning_summary = "concise"`, `model_verbosity = "medium"`, `tool_output_token_limit = 12000`, and `enable_request_compression = true` keep output controlled without removing useful context. For simple tasks, override effort directly from the CLI:
 
 ```bash
 codex -c model_reasoning_effort='"low"' -c model_verbosity='"low"' "update the documentation"
