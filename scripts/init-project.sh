@@ -136,59 +136,12 @@ copy_if_missing "$TEMPLATE_DIR/scripts/framework-state-mode.sh" "scripts/framewo
 copy_if_missing "$TEMPLATE_DIR/scripts/switch-repo-access.sh" "scripts/switch-repo-access.sh"
 chmod +x scripts/*.sh 2>/dev/null || true
 
-# Settings — merge hooks if file already exists
-if [ ! -f ".codex/settings.json" ]; then
-    if [ -f "$TEMPLATE_DIR/.codex/settings.json" ]; then
-        cp "$TEMPLATE_DIR/.codex/settings.json" ".codex/settings.json"
-        log_success "Created: .codex/settings.json"
-    fi
-else
-    merge_needed=$(python3 -c "
-import json, sys
-try:
-    with open('.codex/settings.json') as f:
-        existing = json.load(f)
-    with open('$TEMPLATE_DIR/.codex/settings.json') as f:
-        template = json.load(f)
-    t_hooks = template.get('hooks', {})
-    e_hooks = existing.get('hooks', {})
-    missing = [k for k in t_hooks if k not in e_hooks]
-    print('yes' if missing else 'no')
-except Exception as e:
-    print('error:' + str(e), file=sys.stderr)
-    print('no')
-" 2>/dev/null)
+# Codex config
+copy_if_missing "$TEMPLATE_DIR/.codex/config.toml" ".codex/config.toml"
+copy_if_missing "$TEMPLATE_DIR/.codex/hooks.json" ".codex/hooks.json"
 
-    if [ "$merge_needed" = "yes" ]; then
-        python3 -c "
-import json, sys
-with open('.codex/settings.json') as f:
-    existing = json.load(f)
-with open('$TEMPLATE_DIR/.codex/settings.json') as f:
-    template = json.load(f)
-t_hooks = template.get('hooks', {})
-e_hooks = existing.get('hooks', {})
-for key, val in t_hooks.items():
-    if key not in e_hooks:
-        e_hooks[key] = val
-existing['hooks'] = e_hooks
-with open('.codex/settings.json', 'w') as f:
-    json.dump(existing, f, indent=2)
-    f.write('\n')
-" 2>/dev/null
-        if [ $? -eq 0 ]; then
-            log_success "Updated: .codex/settings.json (merged missing hooks from template)"
-        else
-            log_error "Failed to merge hooks into .codex/settings.json"
-        fi
-    else
-        log_warning "Exists:  .codex/settings.json (hooks up to date)"
-    fi
-fi
-
-# settings.local.json is NOT auto-copied (opt-in only)
-if [ ! -f ".codex/settings.local.json" ]; then
-    log_info "Tip: For full autonomy, create .codex/settings.local.json with bypassPermissions:true"
+if [ -f ".codex/settings.json" ]; then
+    log_warning "Exists:  .codex/settings.json (legacy; prefer .codex/config.toml and .codex/hooks.json)"
 fi
 
 # SNAPSHOT

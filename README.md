@@ -1,6 +1,6 @@
 # Codex Starter v1
 
-[![Version](https://img.shields.io/badge/version-v1.0.0-2563eb)](https://github.com/alexzah-droid/codex-starter)
+[![Version](https://img.shields.io/badge/version-v1.1.0-2563eb)](https://github.com/alexzah-droid/codex-starter)
 [![Status](https://img.shields.io/badge/status-active-16a34a)](https://github.com/alexzah-droid/codex-starter)
 [![Template](https://img.shields.io/badge/template-codex--starter-7c3aed)](https://github.com/alexzah-droid/codex-starter)
 [![Installer](https://img.shields.io/badge/installer-scripts%2Finit--project.sh-f59e0b)](https://github.com/alexzah-droid/codex-starter/blob/main/scripts/init-project.sh)
@@ -8,15 +8,20 @@
 [![Git](https://img.shields.io/badge/git-required-f05032?logo=git&logoColor=white)](https://git-scm.com/)
 [![Python](https://img.shields.io/badge/python3-recommended-3776ab?logo=python&logoColor=white)](https://www.python.org/)
 [![Codex](https://img.shields.io/badge/Codex-rules%2Bskills%2Bagents%2Bhooks-111827?logo=openai&logoColor=white)](https://github.com/openai/codex)
+[![Official Docs](https://img.shields.io/badge/OpenAI%20Codex-official%20docs-0f766e?logo=openai&logoColor=white)](https://developers.openai.com/codex)
+[![Config](https://img.shields.io/badge/config-official%20TOML-0891b2)](https://developers.openai.com/codex/config-basic)
 
 Language: Русский | [English](README.en.md)
 
 `Codex Starter` — это готовая скелетная среда для проектов, в которых основной рабочий агент — Codex. Она предоставляет согласованную структуру правил, навыков, агентов, хуков и памяти, чтобы агент работал автономно и не терял контекст.
 
+Проект базируется на официальной документации OpenAI Codex: конфигурация следует страницам [Config basics](https://developers.openai.com/codex/config-basic), [Advanced configuration](https://developers.openai.com/codex/config-advanced), [Config reference](https://developers.openai.com/codex/config-reference), а lifecycle hooks вынесены в формат [Codex Hooks](https://developers.openai.com/codex/hooks).
+
 ## Что входит в этот шаблон
 
 - `manifest.md` — метаданные проекта и политика `repo_access`
-- `.codex/settings.json` — стартовые настройки Codex runtime, хук-подписки и права
+- `.codex/config.toml` — проектные настройки Codex runtime, sandbox, approvals и feature flags
+- `.codex/hooks.json` — официальные lifecycle hook-подписки Codex
 - `.codex/rules/` — постоянные operational правила для агента
 - `.codex/skills/` — workflow-шаблоны для команд `/start`, `/finish`, `/testing` и др.
 - `.codex/agents/` — роли субагентов: `researcher`, `implementer`, `reviewer`
@@ -30,11 +35,42 @@ Codex Starter помогает:
 
 - сохранять автономность агента
 - защищать контекст проекта от потери
+- использовать официальную схему `.codex/config.toml` и `.codex/hooks.json`
 - разделять проектный паспорт и operational-логику
 - контролировать историю git для framework state
 - не коммитить секреты, локальные БД и артефакты проверок
 - честно фиксировать статус тестов и миграций без скрытых ошибок
 - поддерживать единый workflow для новых и существующих проектов
+
+## Экономия токенов
+
+Базовый конфиг уже снижает лишний расход: `web_search = "cached"`, `model_reasoning_summary = "concise"` и `model_verbosity = "medium"` уменьшают шум без потери управляемости. Для простых задач переопределяйте effort прямо из CLI:
+
+```bash
+codex -c model_reasoning_effort='"low"' -c model_verbosity='"low"' "обнови документацию"
+codex -c model_reasoning_effort='"low"' -c model_verbosity='"low"' "поправь форматирование"
+```
+
+Для сложных задач, где экономить на рассуждении рискованно:
+
+```bash
+codex -c model_reasoning_effort='"high"' "проведи архитектурный review"
+codex -c model_reasoning_effort='"high"' "найди причину падения тестов"
+```
+
+Если вы работаете из CLI и хотите короткие команды, добавьте личные профили в `~/.codex/config.toml`:
+
+```toml
+[profiles.fast]
+model_reasoning_effort = "low"
+model_verbosity = "low"
+
+[profiles.deep]
+model_reasoning_effort = "high"
+model_verbosity = "medium"
+```
+
+После этого можно запускать `codex --profile fast "..."` или `codex --profile deep "..."`. Профили Codex являются экспериментальной CLI-возможностью; в IDE extension они могут не применяться. Не включайте `web_search = "live"` по умолчанию: используйте live-поиск только когда нужны свежие данные, внешняя документация или проверка фактов.
 
 ## Быстрый старт
 
@@ -63,7 +99,7 @@ bash scripts/init-project.sh --template /path/to/codex-starter
 
 - заполните `CODEx.md` под ваш проект
 - проверьте `manifest.md`
-- при необходимости создайте `.codex/settings.local.json`
+- при необходимости переопределите личные параметры в `~/.codex/config.toml`
 - запустите `/start` в Codex
 
 ## Рабочий цикл
@@ -118,7 +154,7 @@ scripts/framework-state-mode.sh check-safe-mode
 ## Что делать после установки
 
 1. Настройте `CODEx.md` для вашего проекта.
-2. Обновите `.codex/settings.json` и, при необходимости, создайте `.codex/settings.local.json`.
+2. Обновите `.codex/config.toml` и, при необходимости, личные параметры в `~/.codex/config.toml`.
 3. Проверьте структуру `.codex/`, `scripts/` и `manifest.md`.
 4. Запустите Codex и выполните `/start`.
 

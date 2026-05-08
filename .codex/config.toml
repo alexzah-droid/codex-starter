@@ -1,0 +1,37 @@
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+model_reasoning_summary = "concise"
+model_verbosity = "medium"
+
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+web_search = "cached"
+personality = "friendly"
+project_root_markers = [".git"]
+
+[agents]
+max_threads = 6
+max_depth = 1
+job_max_runtime_seconds = 1800
+
+[shell_environment_policy]
+inherit = "core"
+ignore_default_excludes = false
+exclude = ["AWS_*", "AZURE_*", "GITHUB_*", "*TOKEN*", "*SECRET*", "*KEY*"]
+
+[sandbox_workspace_write]
+network_access = false
+
+[otel]
+environment = "dev"
+exporter = "none"
+log_user_prompt = false
+
+[analytics]
+enabled = false
+
+[features]
+codex_hooks = true
+multi_agent = true
+shell_snapshot = true
+unified_exec = true

@@ -59,7 +59,7 @@
 - `.env`, `.env.*` — переменные окружения
 - `*.key`, `*.pem`, `*.p12` — ключи и сертификаты
 - `credentials.json`, `secrets/`, `*secret*` — credentials
-- `.codex/settings.local.json` — личные настройки агента
+- `.codex/settings.local.json` — legacy-личные настройки агента
 - `CODEx.local.md` — личные заметки
 - `*.db`, `*.sqlite`, `*.sqlite3`, `*.db-shm`, `*.db-wal` — локальные базы данных
 - `node_modules/`, `__pycache__/`, `.venv/` — зависимости
