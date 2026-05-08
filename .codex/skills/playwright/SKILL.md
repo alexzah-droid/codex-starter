@@ -15,9 +15,14 @@ disable-model-invocation: true
 
 2. **Запустить E2E:**
    ```bash
-   npx playwright test 2>/dev/null || true
+   npx playwright test
    ```
    или эквивалентную команду из проекта.
+
+   Важно:
+   - не скрывать stderr и exit code через `2>/dev/null || true`
+   - если E2E-команды или окружения нет — записать `e2e: skipped` с причиной
+   - если E2E упал — зафиксировать exit code и первые важные ошибки
 
 3. **Собрать результаты:**
    - пройдено/упало

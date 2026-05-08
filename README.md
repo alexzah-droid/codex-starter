@@ -32,6 +32,8 @@ Codex Starter помогает:
 - защищать контекст проекта от потери
 - разделять проектный паспорт и operational-логику
 - контролировать историю git для framework state
+- не коммитить секреты, локальные БД и артефакты проверок
+- честно фиксировать статус тестов и миграций без скрытых ошибок
 - поддерживать единый workflow для новых и существующих проектов
 
 ## Быстрый старт
@@ -64,12 +66,23 @@ bash scripts/init-project.sh --template /path/to/codex-starter
 - при необходимости создайте `.codex/settings.local.json`
 - запустите `/start` в Codex
 
+## Рабочий цикл
+
+1. `/start` — загрузить `.codex/SNAPSHOT.md`, проверить git-состояние и создать локальный session log.
+2. Выполнить задачу автономно: читать правила, запускать проверки, делегировать субагентам при необходимости.
+3. После значимых блоков работы — делать атомарные коммиты и обновлять SNAPSHOT.
+4. `/finish` — запустить проверки, обновить SNAPSHOT, безопасно подготовить коммит и дать краткий отчет.
+
+Если тесты красные, агент не выдаёт сессию за успешно завершённую. Допустим только честный checkpoint-коммит с явным описанием падения в сообщении, SNAPSHOT и отчете.
+
 ## Repo Access
 
 `repo_access` задаёт, можно ли хранить framework state в git:
 
 - `private-solo` — framework state может быть зафиксирован в репозитории
 - `private-shared` / `public` — framework state остаётся локальным
+
+Framework state включает `.codex/`, `CODEx.md`, `manifest.md`, `AGENTS.md` и локальную память `.codex/SNAPSHOT.md`. В public/shared режиме в git должна попадать только продуктовая часть проекта: исходный код, пользовательская документация, production-тесты, миграции и конфиги.
 
 Для публичных/shared репозиториев выполните:
 
@@ -81,6 +94,25 @@ scripts/switch-repo-access.sh public --commit
 
 ```bash
 scripts/switch-repo-access.sh private-shared --commit
+```
+
+Если `repo_access` не указан, режим по умолчанию — `private-solo`. При наличии публичного GitHub remote helper-скрипты работают осторожно, как в `public`, пока `manifest.md` не обновлён явно.
+
+## Безопасность коммитов
+
+Правила коммитов описаны в `.codex/rules/commit-policy.md`:
+
+- агент добавляет только конкретные безопасные файлы, без `git add .` и `git add -A`
+- `.env`, ключи, credentials, локальные БД, storage, зависимости, build/test artifacts и логи не коммитятся
+- lifecycle hooks могут делать checkpoint только для уже tracked изменений и после фильтрации запрещённых путей
+- в public/shared режиме framework-файлы остаются локальными
+
+Перед публикацией проверьте:
+
+```bash
+git status --short
+git diff --check
+scripts/framework-state-mode.sh check-safe-mode
 ```
 
 ## Что делать после установки

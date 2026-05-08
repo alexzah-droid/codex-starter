@@ -33,12 +33,13 @@
 
 Перед compaction автоматически срабатывает hook `PreCompact`, который:
 
-1. **git add -u + commit** tracked изменений (untracked файлы не добавляются — осознанно)
+1. Делает checkpoint tracked изменений после фильтрации запрещённых путей (untracked файлы не добавляются — осознанно)
 2. **Обновить timestamp** в SNAPSHOT.md
 
 **Что hook НЕ делает** (это ответственность агента):
 - Не обновляет содержательные секции SNAPSHOT (Что сделано, В процессе, Следующие шаги)
 - Не добавляет новые untracked файлы
+- Не коммитит пути из списка «Запрещено всегда» в `commit-policy.md`
 - Не обходит `repo_access`: в shared/public режиме SNAPSHOT остаётся локальным, а если framework files всё ещё tracked — hook останавливается и требует `scripts/switch-repo-access.sh`
 
 Поэтому важно обновлять SNAPSHOT.md **до** compaction — в рамках регулярных коммитов (каждые 20 tool calls). Если агент обновлял SNAPSHOT по ходу работы, hook просто зафиксирует последнее состояние.

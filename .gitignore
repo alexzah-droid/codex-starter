@@ -21,8 +21,17 @@ CODEx.local.md
 
 # Environment
 .env
+.env.*
 .env.local
 .env.production
+
+# Secrets and credentials
+*.key
+*.pem
+*.p12
+credentials.json
+secrets/
+*secret*
 
 # OS
 .DS_Store
@@ -36,6 +45,7 @@ __pycache__/
 venv/
 
 # Build
+.next/
 dist/
 dist-release/
 build/
@@ -46,8 +56,14 @@ test-results/
 playwright-report/
 coverage/
 .pytest_cache/
+*.log
 
 # Database (local development)
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
 *.sqlite3
+
+# Local binary/data storage
+storage/

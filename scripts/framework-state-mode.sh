@@ -15,6 +15,14 @@ set -euo pipefail
 PROJECT_DIR="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 MANIFEST="$PROJECT_DIR/manifest.md"
 
+has_public_remote_hint() {
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        return 1
+    fi
+
+    git remote -v 2>/dev/null | awk '{print $2}' | grep -E 'github\.com[:/][^/]+/[^/]+(\.git)?$' | grep -vq '/private/'
+}
+
 get_repo_access() {
     if [ -f "$MANIFEST" ]; then
         local value
@@ -24,6 +32,12 @@ get_repo_access() {
             return 0
         fi
     fi
+
+    if has_public_remote_hint; then
+        printf 'public\n'
+        return 0
+    fi
+
     printf 'private-solo\n'
 }
 

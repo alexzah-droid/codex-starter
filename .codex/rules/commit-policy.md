@@ -6,6 +6,8 @@
 
 Политика коммитов зависит от типа проекта. Тип указан в `manifest.md` → `repo_access`.
 
+Исключение: lifecycle hooks могут делать автоматический checkpoint только для уже tracked изменений и только после фильтрации запрещённых путей. Untracked файлы hooks не добавляют никогда.
+
 ## Три режима
 
 ### 1. `repo_access=public` или `repo_access=private-shared`
@@ -48,7 +50,7 @@
 
 ### 3. Не указан `repo_access`
 
-По умолчанию: работать как `private-solo`. Если обнаружен публичный remote (github.com без /private/ в URL, или явно public) — переключиться на режим `public`.
+По умолчанию: работать как `private-solo`. Если обнаружен публичный remote (github.com без /private/ в URL, или явно public) — работать как `public` до явного обновления `manifest.md`.
 
 ## Запрещено всегда (любой режим)
 
@@ -59,9 +61,11 @@
 - `credentials.json`, `secrets/`, `*secret*` — credentials
 - `.codex/settings.local.json` — личные настройки агента
 - `CODEx.local.md` — личные заметки
-- `*.db`, `*.sqlite`, `*.sqlite3` — локальные базы данных
+- `*.db`, `*.sqlite`, `*.sqlite3`, `*.db-shm`, `*.db-wal` — локальные базы данных
 - `node_modules/`, `__pycache__/`, `.venv/` — зависимости
-- `dist/`, `build/`, `*.egg-info/` — артефакты сборки
+- `storage/` — локальные binary/data файлы
+- `dist/`, `build/`, `.next/`, `*.egg-info/` — артефакты сборки
+- `coverage/`, `test-results/`, `playwright-report/`, `*.log` — артефакты проверок и логи
 
 ## Формирование .gitignore
 

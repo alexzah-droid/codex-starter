@@ -32,6 +32,8 @@ Codex Starter helps you:
 - protect project context from being lost
 - separate the project passport from operational logic
 - control git history for framework state
+- avoid committing secrets, local databases, and test artifacts
+- record test and migration status honestly without hidden failures
 - keep one workflow for new and existing projects
 
 ## Quick Start
@@ -64,12 +66,23 @@ bash scripts/init-project.sh --template /path/to/codex-starter
 - create `.codex/settings.local.json` if needed
 - run `/start` in Codex
 
+## Working Cycle
+
+1. `/start` - load `.codex/SNAPSHOT.md`, inspect git state, and create a local session log.
+2. Work autonomously: read rules, run checks, and delegate to subagents when useful.
+3. After meaningful work blocks, make atomic commits and update SNAPSHOT.
+4. `/finish` - run checks, update SNAPSHOT, prepare a safe commit, and report the result.
+
+If tests are red, the agent must not present the session as cleanly finished. A checkpoint commit is allowed only when it honestly records the failure in the commit message, SNAPSHOT, and final report.
+
 ## Repo Access
 
 `repo_access` controls whether framework state can be stored in git:
 
 - `private-solo` - framework state may be committed to the repository
 - `private-shared` / `public` - framework state stays local
+
+Framework state includes `.codex/`, `CODEx.md`, `manifest.md`, `AGENTS.md`, and local memory in `.codex/SNAPSHOT.md`. In public/shared mode, git should contain only the product surface: source code, user-facing documentation, production tests, migrations, and project configs.
 
 For public or shared repositories, run:
 
@@ -81,6 +94,25 @@ or:
 
 ```bash
 scripts/switch-repo-access.sh private-shared --commit
+```
+
+If `repo_access` is missing, the default mode is `private-solo`. When a public GitHub remote is detected, helper scripts behave conservatively as `public` until `manifest.md` is updated explicitly.
+
+## Commit Safety
+
+Commit rules live in `.codex/rules/commit-policy.md`:
+
+- the agent stages only explicit safe files, never `git add .` or `git add -A`
+- `.env`, keys, credentials, local databases, storage, dependencies, build/test artifacts, and logs are never committed
+- lifecycle hooks may checkpoint only already tracked changes and only after filtering forbidden paths
+- in public/shared mode, framework files stay local
+
+Before publishing, check:
+
+```bash
+git status --short
+git diff --check
+scripts/framework-state-mode.sh check-safe-mode
 ```
 
 ## What To Do After Installation

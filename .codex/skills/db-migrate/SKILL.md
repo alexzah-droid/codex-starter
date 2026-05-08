@@ -20,9 +20,14 @@ disable-model-invocation: true
 
 3. **Запустить миграцию:**
    ```bash
-   ./scripts/db-migrate.sh 2>/dev/null || true
+   ./scripts/db-migrate.sh
    ```
    или соответствующую команду проекта.
+
+   Важно:
+   - не скрывать stderr и exit code через `2>/dev/null || true`
+   - если команды миграции нет — записать `migration: skipped (no migration command found)`
+   - если миграция упала — зафиксировать exit code и первые важные ошибки
 
 4. **Сохранить результат:**
    - статус миграции
