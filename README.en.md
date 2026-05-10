@@ -15,6 +15,8 @@ Language: [Русский](README.md) | English
 
 `Codex Starter` is a ready-to-use skeleton environment for projects where Codex is the primary working agent. It provides a consistent structure for rules, skills, agents, hooks, and project memory so the agent can work autonomously without losing context.
 
+For a starter setup for the Claude agent, use Alexey Krol's repository: [alexeykrol/claude-code-starter](https://github.com/alexeykrol/claude-code-starter).
+
 This project is based on the official OpenAI Codex documentation: configuration follows [Config basics](https://developers.openai.com/codex/config-basic), [Advanced configuration](https://developers.openai.com/codex/config-advanced), [Config reference](https://developers.openai.com/codex/config-reference), [Sample config](https://developers.openai.com/codex/config-sample), and lifecycle hooks use the documented [Codex Hooks](https://developers.openai.com/codex/hooks) format.
 
 ## What This Template Includes

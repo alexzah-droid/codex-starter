@@ -15,6 +15,8 @@ Language: Русский | [English](README.en.md)
 
 `Codex Starter` — это готовая скелетная среда для проектов, в которых основной рабочий агент — Codex. Она предоставляет согласованную структуру правил, навыков, агентов, хуков и памяти, чтобы агент работал автономно и не терял контекст.
 
+Если вам нужна стартовая настройка для агента Claude, рекомендуется воспользоваться репозиторием Алексея Крола: [alexeykrol/claude-code-starter](https://github.com/alexeykrol/claude-code-starter).
+
 Проект базируется на официальной документации OpenAI Codex: конфигурация следует страницам [Config basics](https://developers.openai.com/codex/config-basic), [Advanced configuration](https://developers.openai.com/codex/config-advanced), [Config reference](https://developers.openai.com/codex/config-reference), [Sample config](https://developers.openai.com/codex/config-sample), а lifecycle hooks вынесены в формат [Codex Hooks](https://developers.openai.com/codex/hooks).
 
 ## Что входит в этот шаблон
